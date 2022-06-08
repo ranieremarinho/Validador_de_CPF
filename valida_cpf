@@ -1,0 +1,103 @@
+
+    <script>
+        function Left(str, n){
+          if (n <= 0)
+              return "";
+          else if (n > String(str).length)
+              return str;
+          else
+              return String(str).substring(0,n);
+        }
+        function Right(str, n){
+            if (n <= 0)
+               return "";
+            else if (n > String(str).length)
+               return str;
+            else {
+               var iLen = String(str).length;
+               return String(str).substring(iLen, iLen - n);
+            }
+        }
+
+        function ehcpf(cpf){
+            var i = 0            /* utilizada nos laços For */
+            var strcampo = ''    /* armazena do CPF que será utilizada para o cálculo */
+            var strCaracter = '' /* armazena os digitos do CPF da direita para a esquerda */
+            var intNumero = 0    /* armazena o digito separado para cálculo (uma a um) */
+            var intMais = 0      /* armazena o digito específico multiplicado pela sua base */
+            var lngSoma = 0      /* armazena a soma dos digitos multiplicados pela sua base(intmais) */
+            var dblDivisao = 0   /* armazena a divisão dos digitos*base por 11 */
+            var lngInteiro = 0   /* armazena inteiro da divisão */
+            var intResto = 0     /* armazena o resto */
+            var intDig1 = 0      /* armazena o 1º digito verificador */
+            var intDig2 = 0      /* armazena o 2º digito verificador */
+            var strConf = 0      /* armazena o digito verificador */
+
+            if (cpf.length!=11){
+                return false
+            }
+            else
+                /*Inicia cálculos do 1º dígito*/
+                lngSoma = 0
+                intNumero = 0
+                intMais = 0
+                strcampo = Left(cpf, 9)
+
+                for(i=2;i < 11;i++){
+                    strCaracter = Right(strcampo, i - 1)
+                    intNumero = Number(Left(strCaracter, 1))
+                    intMais = intNumero * i
+                    lngSoma = lngSoma + intMais
+                }
+    
+                dblDivisao = lngSoma / 11
+                lngInteiro = parseInt(dblDivisao) * 11
+                intResto = lngSoma - lngInteiro
+
+                if (intResto == 0 || intResto == 1){
+                    intDig1 = 0
+                }
+                else{
+                    intDig1 = 11 - intResto
+                }
+
+                strcampo = strcampo + intDig1 +''   /*concatena o CPF com o primeiro digito verificador */
+
+                intDig1 = intDig1 + '' 
+
+                /*Inicia cálculos do 2º dígito*/
+                lngSoma = 0
+                intNumero = 0
+                intMais = 0
+          
+                for(i=2;i < 12;i++){
+                    strCaracter = Right(strcampo, i - 1)
+                    intNumero =Number(Left(strCaracter, 1))
+                    intMais = intNumero * i                  
+                    lngSoma = lngSoma + intMais
+                }
+
+                dblDivisao = lngSoma / 11
+                lngInteiro = parseInt(dblDivisao) * 11
+                intResto = lngSoma - lngInteiro
+                if (intResto == 0 || intResto == 1){
+                    intDig2 = '0'
+                }
+                else{
+                    intDig2 = 11 - intResto
+                    intDig2 = intDig2 +''
+                } 
+
+                /*Concatena o 1º dígito e o 2º dígito*/                       
+                strConf = intDig1 + intDig2 + ''
+                var strDig = Right(cpf, 2) + ''
+
+                if (strConf == strDig){
+                    return true
+                }
+                else
+                {
+                    return false
+                }
+            }
+    </script>
